@@ -13,10 +13,10 @@ trang web -->
     <?php include_once(__DIR__ . '/../layouts/styles.php'); ?>
     <link href="/demoshop/assets/frontend/css/style.css" type="text/css" rel="stylesheet" />
     <style>
-        .image {
-            width: 100px;
-            height: 100px;
-        }
+    .image {
+        width: 100px;
+        height: 100px;
+    }
     </style>
 </head>
 
@@ -49,55 +49,56 @@ alert-dismissible fade d-none" role="alert">
             <div class="row">
                 <div class="col col-md-12">
                     <?php if (!empty($cart)) : ?>
-                        <table id="tblCart" class="table tablebordered">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Sub Total</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="datarow">
-                                <?php $no = 1; ?>
-                                <?php foreach ($cart as $item) : ?>
-                                    <tr>
-                                        <td><?= $no ?></td>
-                                        <td>
-                                            <?php if (empty($item['image'])) : ?>
-                                                <img src="/demoshop/assets/shared/img/default-image_600.png"
-                                                    class="imgfluid image" />
-                                            <?php else : ?>
-                                                <img src="/demoshop/assets/<?= $item['image'] ?>" class="img-fluid image" />
-                                            <?php endif; ?>
-                                        </td>
-                                        <td><?= $item['name'] ?></td>
-                                        <td>
-                                            <input type="number" class="form-control" id="quantity_<?= $item['id'] ?>"
-                                                name="quantity" value="<?= $item['quantity'] ?>" />
-                                            <button class="btn btn-primary btn-sm btn-update-quantity" data-id="<?= $item['id']
+                    <table id="tblCart" class="table tablebordered">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Sub Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="datarow">
+                            <?php $no = 1; ?>
+                            <?php foreach ($cart as $item) : ?>
+                            <tr>
+                                <td><?= $no ?></td>
+                                <td>
+                                    <?php if (empty($item['image'])) : ?>
+                                    <img src="/demoshop/assets/shared/img/default-image_600.png"
+                                        class="imgfluid image" />
+                                    <?php else : ?>
+                                    <img src="/demoshop/assets/<?= $item['image'] ?>" class="img-fluid image" />
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= $item['name'] ?></td>
+                                <td>
+                                    <input type="number" class="form-control" id="quantity_<?= $item['id'] ?>"
+                                        name="quantity" value="<?= $item['quantity'] ?>" />
+                                    <button class="btn btn-primary btn-sm btn-update-quantity"
+                                        data-id="<?= $item['id']
                                                                                                                 ?>">Update</button>
-                                        </td>
-                                        <td><?=
+                                </td>
+                                <td><?=
                                             number_format($item['price'], 2, ".", ",") ?> vnđ</td>
-                                        <td><?=
+                                <td><?=
                                             number_format($item['quantity'] * $item['price'], 2, ".", ",") ?>
-                                            vnđ</td>
-                                        <td>
-                                            <a id="delete_<?= $no ?>" data-id="<?= $item['id'] ?>"
-                                                class="btn btn-danger btn-delete-product">
-                                                <i class="fa fa-trash" aria-hidden="true"></i> Delete
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                                    vnđ</td>
+                                <td>
+                                    <a id="delete_<?= $no ?>" data-id="<?= $item['id'] ?>"
+                                        class="btn btn-danger btn-delete-product">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                     <?php else : ?>
-                        <h2>Cart Empty</h2>
+                    <h2>Cart Empty</h2>
                     <?php endif; ?>
                     <a href="/demoshop/frontend" class="btn btn-warning btn-md"><i class="fa fa-arrow-left"
                             aria-hidden="true"></i>
@@ -118,70 +119,70 @@ alert-dismissible fade d-none" role="alert">
     <!-- Các file Javascript sử dụng riêng cho trang này, liên kết tại
 đây -->
     <script>
-        $(document).ready(function() {
-            function removeProductItem(id) {
-                var data = {
-                    id: id
-                };
-                $.ajax({
-                    url: '/demoshop/frontend/API/removeCartItem.php',
-                    method: "POST",
-                    dataType: 'json',
-                    data: data,
-                    success: function(data) {
-                        // Refresh lại trang
-                        location.reload();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);
-                        var htmlString = `<h1>Can not delete
-item</h1>`;
-                        $('#message').html(htmlString);
-                        $('.alert').removeClass('dnone').addClass('show');
-                    }
-                });
+    $(document).ready(function() {
+        function removeProductItem(id) {
+            var data = {
+                id: id
             };
-
-            $('#tblCart').on('click', '.btn-delete-product',
-                function(event) {
-                    event.preventDefault();
-                    var id = $(this).data('id');
-                    if (confirm('Bạn có chắc chắn muốn xoá sản phẩm này khỏi giỏ hàng?')) {
-                        removeProductItem(id);
-                    }
-                });
-
-            function updateCartItem(id, quantity) {
-
-                var data = {
-                    id: id,
-                    quantity: quantity
-                };
-                $.ajax({
-                    url: '/demoshop/frontend/API/updateCartItem.php',
-                    method: "POST",
-                    dataType: 'json',
-                    data: data,
-                    success: function(data) {
-                        location.reload();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);
-                        var htmlString = `<h1>Can not update
+            $.ajax({
+                url: '/demoshop/frontend/API/removeCartItem.php',
+                method: "POST",
+                dataType: 'json',
+                data: data,
+                success: function(data) {
+                    // Refresh lại trang
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    var htmlString = `<h1>Can not delete
 item</h1>`;
-                        $('#message').html(htmlString);
-                        $('.alert').removeClass('dnone').addClass('show');
-                    }
-                });
+                    $('#message').html(htmlString);
+                    $('.alert').removeClass('dnone').addClass('show');
+                }
+            });
+        };
+
+        $('#tblCart').on('click', '.btn-delete-product',
+            function(event) {
+                event.preventDefault();
+                var id = $(this).data('id');
+                if (confirm('Bạn có chắc chắn muốn xoá sản phẩm này khỏi giỏ hàng?')) {
+                    removeProductItem(id);
+                }
+            });
+
+        function updateCartItem(id, quantity) {
+
+            var data = {
+                id: id,
+                quantity: quantity
             };
-            $('#tblCart').on('click', '.btn-update-quantity',
-                function(event) {
-                    event.preventDefault();
-                    var id = $(this).data('id');
-                    var quantity = $('#quantity_' + id).val();
-                    updateCartItem(id, quantity);
-                });
-        });
+            $.ajax({
+                url: '/demoshop/frontend/API/updateCartItem.php',
+                method: "POST",
+                dataType: 'json',
+                data: data,
+                success: function(data) {
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    var htmlString = `<h1>Can not update
+item</h1>`;
+                    $('#message').html(htmlString);
+                    $('.alert').removeClass('dnone').addClass('show');
+                }
+            });
+        };
+        $('#tblCart').on('click', '.btn-update-quantity',
+            function(event) {
+                event.preventDefault();
+                var id = $(this).data('id');
+                var quantity = $('#quantity_' + id).val();
+                updateCartItem(id, quantity);
+            });
+    });
     </script>
 </body>
 
