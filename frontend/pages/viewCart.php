@@ -78,7 +78,7 @@ alert-dismissible fade d-none" role="alert">
                                         <td>
                                             <input type="number" class="form-control" id="quantity_<?= $item['id'] ?>"
                                                 name="quantity" value="<?= $item['quantity'] ?>" />
-                                            <button class="btn btnprimary btn-sm btn-update-quantity"
+                                            <button class="btn btn-primary btn-sm btn-update-quantity"
                                                 data-id="<?= $item['id']
                                                             ?>">Update</button>
                                         </td>
@@ -100,7 +100,7 @@ alert-dismissible fade d-none" role="alert">
                     <?php else : ?>
                         <h2>Cart Empty</h2>
                     <?php endif; ?>
-                    <a href="/demoshop/frontend" class="btn btnwarning btn-md"><i class="fa fa-arrow-left"
+                    <a href="/demoshop/frontend" class="btn btn-warning btn-md"><i class="fa fa-arrow-left"
                             aria-hidden="true"></i>
                         Continue Shopping</a>
                     <a href="/demoshop/frontend/pages/checkout.php" class="btn btn-primary btn-md"><i
