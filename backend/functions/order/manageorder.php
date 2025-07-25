@@ -29,9 +29,10 @@ $conn->close();
 
     <div class="container mt-4">
         <h2>Quản lý đơn hàng</h2>
-        <a href="/demoshop/backend/pages/dashboard.php" class="btn btn-secondary">
+        <a href="/demoshop/backend/pages/dashboard.php" class="btn btn-dark">
             ← Quay về Dashboard
         </a>
+
         <div class="mb-4"></div>
         <table class="table table-bordered">
             <thead class="thead-dark">

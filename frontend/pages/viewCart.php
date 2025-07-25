@@ -78,9 +78,8 @@ alert-dismissible fade d-none" role="alert">
                                         <td>
                                             <input type="number" class="form-control" id="quantity_<?= $item['id'] ?>"
                                                 name="quantity" value="<?= $item['quantity'] ?>" />
-                                            <button class="btn btn-primary btn-sm btn-update-quantity"
-                                                data-id="<?= $item['id']
-                                                            ?>">Update</button>
+                                            <button class="btn btn-primary btn-sm btn-update-quantity" data-id="<?= $item['id']
+                                                                                                                ?>">Update</button>
                                         </td>
                                         <td><?=
                                             number_format($item['price'], 2, ".", ",") ?> vnđ</td>

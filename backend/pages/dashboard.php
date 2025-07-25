@@ -117,6 +117,39 @@ if (session_id() === '') {
     <script>
         $(document).ready(function() {});
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function fetchDashboardData() {
+                $.ajax({
+                    url: "/demoshop/backend/api/getDashboardData.php",
+                    method: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $("#baocaoSanPham_SoLuong h1").text(data.products);
+                        $("#baocaoKhachHang_SoLuong h1").text(data.users);
+                        $("#baocaoDonHang_SoLuong h1").text(data.orders);
+                        $("#ketqua").html('');
+                    },
+                    error: function() {
+                        $("#ketqua").html(
+                            '<div class="alert alert-danger">Không thể tải dữ liệu.</div>'
+                        );
+                    }
+                });
+            }
+
+            // Gán sự kiện cho nút refresh
+            $("#refreshBaoCaoSanPham, #refreshBaoCaoKhachHang, #refreshBaoCaoDonHang").click(
+                function() {
+                    fetchDashboardData();
+                });
+
+            // Load khi mở dashboard
+            fetchDashboardData();
+        });
+    </script>
+
+
 </body>
 
 </html>

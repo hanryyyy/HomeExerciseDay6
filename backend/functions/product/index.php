@@ -25,7 +25,8 @@
             <!-- end sidebar -->
 
             <main role="main" class="col-md-10 ml-sm-auto px-4 mb-2">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Product List</h1>
                 </div>
 
@@ -35,17 +36,31 @@
                 // 1. Include configuration file connecting to database, initial connection $conn
                 include_once(__DIR__ . '/../../../dbconnect.php');
 
-                // 2. create query string $sql
-                $sql ="SELECT id, name, price, stock_quantity, image_url, category FROM products ORDER BY id DESC";
+                // Số sản phẩm trên mỗi trang
+                $limit = 10;
 
-                // 3. execute query
+                // Trang hiện tại
+                $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+
+                // Tính offset
+                $offset = ($page - 1) * $limit;
+
+                // Đếm tổng sản phẩm
+                $totalResult = $conn->query("SELECT COUNT(*) AS total FROM products");
+                $totalRow = $totalResult->fetch_assoc();
+                $totalProducts = $totalRow['total'];
+                $totalPages = ceil($totalProducts / $limit);
+
+                // Truy vấn sản phẩm giới hạn theo trang
+                $sql = "SELECT id, name, price, stock_quantity, image_url, category FROM products ORDER BY id DESC LIMIT $limit OFFSET $offset";
                 $result = $conn->query($sql);
 
-                // 4. get data
+                // Lấy dữ liệu sản phẩm
                 $prods = [];
                 while ($row = $result->fetch_array(MYSQLI_NUM)) {
-                    $prods[] = $row;                
+                    $prods[] = $row;
                 }
+
                 $result->free_result();
                 $conn->close();
                 // print_r($prods); die();
@@ -71,8 +86,8 @@
                                 <td><?= $item[1] ?></td>
                                 <td><?= $item[2] ?></td>
                                 <td><?= $item[3] ?></td>
-<td>
-                                    <img src="/demoshop/assets/<?= $item[4] ?>" alt="" style="width:200px;height:auto;"/>
+                                <td>
+                                    <img src="/demoshop/assets/<?= $item[4] ?>" alt="" style="width:200px;height:auto;" />
                                 </td>
                                 <td><?= $item[5] ?></td>
                                 <td>
@@ -83,6 +98,23 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <!-- PHÂN TRANG -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                            <a class="page-link" href="?page=<?= $page - 1 ?>">Previous</a>
+                        </li>
+                        <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+                        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                            <a class="page-link" href="?page=<?= $page + 1 ?>">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
                 <!-- End block content -->
             </main>
         </div>
